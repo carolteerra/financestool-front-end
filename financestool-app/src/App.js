@@ -1,13 +1,17 @@
 import React from 'react'
-import Login from '../src/views/login'
+import Navbar from './components/navbar'
+
+import Rotas from './main/rotas'
+
 import 'bootswatch/dist/quartz/bootstrap.css'
 import './custom.css'
 
 class App extends React.Component {
   render() {
     return (
-      <div>
-        <Login />
+      <div className="container">
+        <Navbar />
+        <Rotas />
       </div>
     )
   }

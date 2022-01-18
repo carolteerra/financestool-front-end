@@ -1,8 +1,35 @@
 import React from 'react'
 import Card from '../components/cards'
 import FormGroup from '../components/form-group'
+import { withRouter } from 'react-router-dom'
+import axios from 'axios'
 
 class Login extends React.Component {
+  state = {
+    email: '',
+    senha: ''
+  }
+
+  constructor(){
+    super();
+    this.service = new UsuarioService();
+}
+
+entrar = () => {
+  this.service.autenticar({
+      email: this.state.email,
+      senha: this.state.senha
+  }).then( response => {
+      this.context.iniciarSessao(response.data)
+      this.props.history.push('/home')
+  }).catch( erro => {
+     mensagemErro(erro.response.data)
+  })
+}
+
+  prepareCadastrar = () => {
+    this.props.history.push('/cadastro-usuarios')
+  }
   render() {
     return (
       <div className="row">
@@ -16,10 +43,10 @@ class Login extends React.Component {
                       <FormGroup label="Email: *" htmlFor="exampleInputEmail1">
                         <input
                           type="email"
-                          // // value={this.state.email}
-                          // onChange={e =>
-                          //   this.setState({ email: e.target.value })
-                          // }
+                          value={this.state.email}
+                          onChange={e =>
+                            this.setState({ email: e.target.value })
+                          }
                           className="form-control"
                           id="exampleInputEmail1"
                           aria-describedby="emailHelp"
@@ -32,23 +59,20 @@ class Login extends React.Component {
                       >
                         <input
                           type="password"
-                          // value={this.state.senha}
-                          // onChange={e =>
-                          //   this.setState({ senha: e.target.value })
-                          // }
+                          value={this.state.senha}
+                          onChange={e =>
+                            this.setState({ senha: e.target.value })
+                          }
                           className="form-control"
                           id="exampleInputPassword1"
                           placeholder="Password"
                         />
                       </FormGroup>
-                      <button
-                        // onClick={this.entrar}
-                        className="btn btn-info"
-                      >
+                      <button onClick={this.entrar} className="btn btn-info">
                         <i className="pi pi-sign-in"></i>Entrar
                       </button>
                       <button
-                        // onClick={this.prepareCadastrar}
+                        onClick={this.prepareCadastrar}
                         className="btn btn-primary"
                       >
                         <i className="pi pi-plus"></i> Cadastrar
@@ -65,4 +89,4 @@ class Login extends React.Component {
   }
 }
 
-export default Login
+export default withRouter(Login)
